@@ -2,37 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Estilo global para placeholders */
-::placeholder {
-  color: rgb(75, 85, 99) !important;
-  opacity: 1;
+/* Estilos más específicos para placeholders */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #4B5563 !important; /* Un gris más oscuro */
+  opacity: 1 !important;
 }
 
+/* Para Safari/Chrome */
 ::-webkit-input-placeholder {
-  color: rgb(75, 85, 99) !important;
-  opacity: 1;
+  color: #4B5563 !important;
+  opacity: 1 !important;
 }
 
+/* Para Firefox */
+::-moz-placeholder {
+  color: #4B5563 !important;
+  opacity: 1 !important;
+}
+
+/* Para Internet Explorer */
 :-ms-input-placeholder {
-  color: rgb(75, 85, 99) !important;
-  opacity: 1;
+  color: #4B5563 !important;
+  opacity: 1 !important;
 }
 
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* Para Edge */
+::-ms-input-placeholder {
+  color: #4B5563 !important;
+  opacity: 1 !important;
 }
