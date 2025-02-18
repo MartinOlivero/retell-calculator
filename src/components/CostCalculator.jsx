@@ -1,12 +1,6 @@
-"use client";
-
 import React, { useState, useEffect } from 'react';
 
 const CostCalculator = () => {
-  // Primero declaramos el estado de montaje
-  const [mounted, setMounted] = useState(false);
-  
-  // Luego declaramos todos los demás estados
   const [minutes, setMinutes] = useState(100);
   const [telephonyProvider, setTelephonyProvider] = useState('twilio');
   const [customTelephonyCost, setCustomTelephonyCost] = useState(0);
@@ -18,18 +12,19 @@ const CostCalculator = () => {
   const [totalCost, setTotalCost] = useState(0);
   const [extraCosts, setExtraCosts] = useState([]);
 
-  // Definimos los costos base
+  // Costos base por proveedor (USD)
   const costs = {
     telephony: {
       twilio: 0.010,
       custom: customTelephonyCost
     },
     voice: {
-      elevenlabs: 0.00,
-      deepgram: 0.010,
+      elevenlabs: 0.07,
+      playht: 0.010,
       openai: 0.010
     },
     llm: {
+      'Custom': 0.000,
       'gpt4-mini': 0.006,
       'gpt4': 0.050,
       'claude-haiku': 0.012,
@@ -37,10 +32,7 @@ const CostCalculator = () => {
     }
   };
 
-  // Definimos la función calculateTotal fuera del useEffect
   const calculateTotal = () => {
-    if (!mounted) return;
-
     const telephonyCost = minutes * (telephonyProvider === 'custom' ? customTelephonyCost : costs.telephony[telephonyProvider]);
     const voiceCost = minutes * costs.voice[voiceProvider];
     const llmCost = minutes * costs.llm[llmProvider];
@@ -56,27 +48,14 @@ const CostCalculator = () => {
     setTotalCost(total);
   };
 
-  // Primero el useEffect para el montaje
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Luego el useEffect para el cálculo
-  useEffect(() => {
-    if (mounted) {
-      calculateTotal();
-    }
-  }, [mounted, minutes, telephonyProvider, customTelephonyCost, voiceProvider, llmProvider, automation, crm, profit, extraCosts]);
+    calculateTotal();
+  }, [minutes, telephonyProvider, customTelephonyCost, voiceProvider, llmProvider, automation, crm, profit, extraCosts]);
 
   const addExtraCost = () => {
     setExtraCosts([...extraCosts, { description: '', amount: 0, type: 'fixed' }]);
   };
 
-  if (!mounted) {
-    return null;
-  }
-
-  // El resto del JSX sigue igual...
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
@@ -147,7 +126,7 @@ const CostCalculator = () => {
                 className="w-full px-3 py-2 border rounded-lg shadow-sm"
               >
                 <option value="elevenlabs">ElevenLabs (${costs.voice.elevenlabs}/min)</option>
-                <option value="deepgram">Deepgram (${costs.voice.deepgram}/min)</option>
+                <option value="playht">PlayHT (${costs.voice.playht}/min)</option>
                 <option value="openai">OpenAI (${costs.voice.openai}/min)</option>
               </select>
             </div>
@@ -160,6 +139,7 @@ const CostCalculator = () => {
                 onChange={(e) => setLlmProvider(e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg shadow-sm"
               >
+                <option value="Custom">Custom (${costs.llm.Custom})</option>
                 <option value="gpt4-mini">GPT-4 mini (${costs.llm['gpt4-mini']})</option>
                 <option value="gpt4">GPT-4 (${costs.llm.gpt4})</option>
                 <option value="claude-haiku">Claude 3 Haiku (${costs.llm['claude-haiku']})</option>
@@ -266,9 +246,9 @@ const CostCalculator = () => {
 
           {/* Total */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 rounded-xl shadow-lg text-white">
-            <h2 className="text-xl font-bold mb-2">Costo Total</h2>
+            <h2 className="text-xl font-bold mb-2">Costo Total (tiene 3 decimales)</h2>
             <p className="text-4xl font-bold">
-              ${totalCost.toFixed(2)} USD
+              ${totalCost.toFixed(3)} USD
             </p>
           </div>
 
@@ -276,9 +256,14 @@ const CostCalculator = () => {
           <div className="mt-8 text-center text-gray-600">
             <p className="text-sm">
               Powered by{' '}
-              <span className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <a 
+                href="https://www.youtube.com/@Tincho.Olivero/videos" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+              >
                 Tincho.Olivero
-              </span>
+              </a>
             </p>
           </div>
         </div>
