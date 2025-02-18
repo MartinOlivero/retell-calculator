@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Estilo global para placeholders */
+::placeholder {
+  color: rgb(75, 85, 99) !important;
+  opacity: 1;
+}
+
+::-webkit-input-placeholder {
+  color: rgb(75, 85, 99) !important;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: rgb(75, 85, 99) !important;
+  opacity: 1;
+}
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
